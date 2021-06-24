@@ -7,3 +7,9 @@ export TRAEFIK_BACKEND=transfersh
 export TRAEFIK_HOSTNAME=host.domain.com
 docker stack deploy -c stack.yml transfersh
 ```
+
+There is also a docker compose file if you want to quickly run it locally.  Just run :
+
+```sh
+docker compose up
+```

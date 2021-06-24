@@ -1,0 +1,6 @@
+services:
+    app:
+        image: dutchcoders/transfer.sh:v1.2.4
+        command: ["--listener=0.0.0.0:8080", "--provider=local", "--basedir=/tmp", "--purge-days=2", "--purge-interval=2"]
+        ports:
+            - "8080:8080"
