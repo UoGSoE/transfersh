@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+    app:
+        image: dutchcoders/transfer.sh:v1.2.4
+        command: ["--listener=0.0.0.0:8080", "--provider=local", "--basedir=/tmp", "--purge-days=2", "--purge-interval=2"]
+        networks:
+            - proxy
+            - default
+        logging:
+            options:
+                max-size: '12m'
+                max-file: '5'
+            driver: json-file
+        deploy:
+            replicas: 1
+            labels:
+                # note: this assumes traefik v2
+                - "traefik.enable=true"
+                - "traefik.http.routers.${TRAEFIK_BACKEND}.rule=Host(`${TRAEFIK_HOSTNAME}`)"
+                - "traefik.http.routers.${TRAEFIK_BACKEND}.entrypoints=web"
+                - "traefik.http.services.${TRAEFIK_BACKEND}.loadbalancer.server.port=8080"
+                - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.rule=Host(`${TRAEFIK_HOSTNAME}`)"
+                - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.entrypoints=web-secured"
+                - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.tls.certresolver=mytlschallenge"
+            placement:
+                preferences:
+                    - spread: node.labels.site
+                constraints:
+                    - "node.labels.weaksauce==false"
+            resources:
+                limits:
+                    memory: 1024M
+                    cpus: "1"
+                reservations:
+                    memory: 40M
+                    cpus: "0.1"
+            update_config:
+                parallelism: 1
+                failure_action: rollback
+                order: start-first
+
+networks:
+    default:
+    proxy:
+        external: true
