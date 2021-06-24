@@ -23,6 +23,11 @@ services:
                 - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.rule=Host(`${TRAEFIK_HOSTNAME}`)"
                 - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.entrypoints=web-secured"
                 - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.tls.certresolver=mytlschallenge"
+                # HTTP basic auth
+                # Note: all dollar signs in the hash need to be doubled for escaping.
+                # To create user:password pair, it's possible to use this command:
+                # echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
+                # - "traefik.http.middlewares.${TRAEFIK_BACKEND}.basicauth.users=user:$$apr1$$MIvU0IA3$$OAzz1VjY6j64V1JTAjd9W0"
             placement:
                 preferences:
                     - spread: node.labels.site
