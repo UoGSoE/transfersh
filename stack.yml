@@ -26,8 +26,9 @@ services:
                 # HTTP basic auth
                 # Note: all dollar signs in the hash need to be doubled for escaping.
                 # To create user:password pair, it's possible to use this command:
-                # echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
-                # - "traefik.http.middlewares.${TRAEFIK_BACKEND}.basicauth.users=user:$$apr1$$MIvU0IA3$$OAzz1VjY6j64V1JTAjd9W0"
+                # echo $(htpasswd -nb user1 password) | sed -e s/\\$/\\$\\$/g
+                # echo $(htpasswd -nb user2 secret) | sed -e s/\\$/\\$\\$/g
+                # - "traefik.http.middlewares.${TRAEFIK_BACKEND}.basicauth.users=user1:$$apr1$$WPzENTfG$$3Qts1fV6yp6wrlvVTSn4j/,user2:$$apr1$$eVoUtG78$$InuCOa9kur1usr2Kzpy.k0"
             placement:
                 preferences:
                     - spread: node.labels.site
