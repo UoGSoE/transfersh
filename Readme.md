@@ -5,6 +5,8 @@ This is just a swarm stack that runs [transfer.sh](https://github.com/dutchcoder
 ```sh
 export TRAEFIK_BACKEND=transfersh
 export TRAEFIK_HOSTNAME=host.domain.com
+export HTTP_USER=username
+export HTTP_PASS=password
 docker stack deploy -c stack.yml transfersh
 ```
 
